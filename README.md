@@ -1,2 +1,3 @@
-STUDY-TRACKER
-its a website that track your progress when u start doing anything useful 
+# Study Tracker
+
+A website that tracks your study sessions and shows your progress over time.
