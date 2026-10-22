@@ -105,7 +105,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+# Use Saudi time instead of UTC, so dates match our real day.
+TIME_ZONE = "Asia/Riyadh"
 
 USE_I18N = True
 
