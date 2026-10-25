@@ -1,7 +1,8 @@
-from django.shortcuts import redirect, render
+from django.db.models import Count, Sum
+from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import SessionForm
-from .models import Session
+from .models import Course, Session
 
 
 def home(request):
@@ -33,4 +34,27 @@ def add_session(request):
     # We reach here when the page is first opened,
     # OR when the form had errors (it then shows the error messages).
     return render(request, "tracker/add_session.html", {"form": form})
+
+
+def course_list(request):
+    """Courses page: every course with how many sessions it has."""
+    # annotate() adds a new value to each course: the number of its sessions.
+    # It's our sessions_count() loop from day 2, done by the database for every course.
+    courses = Course.objects.annotate(session_count=Count("sessions")).order_by("name")
+    return render(request, "tracker/course_list.html", {"courses": courses})
+
+
+def course_detail(request, pk):
+    """One course's page: its sessions and its total time."""
+    # Find the course with this number. If it doesn't exist, show a 404 page instead of crashing.
+    course = get_object_or_404(Course, pk=pk)
+    # Only THIS course's sessions (thanks to related_name="sessions" in models.py).
+    sessions = course.sessions.order_by("-day")
+    # Add up all the minutes. "or 0": if there are no sessions, Sum gives None (nothing).
+    total_minutes = sessions.aggregate(total=Sum("minutes"))["total"] or 0
+    return render(request, "tracker/course_detail.html", {
+        "course": course,
+        "sessions": sessions,
+        "total_minutes": total_minutes,
+    })
 

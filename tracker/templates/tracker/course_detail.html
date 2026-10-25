@@ -1,0 +1,34 @@
+{% extends "tracker/base.html" %}
+
+{% block title %}{{ course.name }}{% endblock %}
+
+{% block content %}
+    <h1 class="mb-1">{{ course.name }}</h1>
+    <p class="text-muted mb-3">Total: {{ total_minutes }} minutes</p>
+
+    {% if sessions %}
+        <table class="table table-striped bg-white">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Minutes</th>
+                    <th>Note</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for session in sessions %}
+                    <tr>
+                        <td>{{ session.day }}</td>
+                        <td>{{ session.minutes }}</td>
+                        <td>{{ session.note }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No sessions for this course yet.</p>
+    {% endif %}
+
+    <a href="{% url 'course_list' %}" class="btn btn-secondary">Back to courses</a>
+{% endblock %}
+

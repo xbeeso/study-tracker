@@ -3,33 +3,35 @@
 {% block title %}My Sessions{% endblock %}
 
 {% block content %}
-    <h1 class="mb-3">My Study Sessions</h1>
+<h1 class="mb-3">My Study Sessions</h1>
 
-    {# The same if/else you know from Python, but inside HTML. #}
-    {% if sessions %}
-        <table class="table table-striped bg-white">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Course</th>
-                    <th>Minutes</th>
-                    <th>Note</th>
-                </tr>
-            </thead>
-            <tbody>
-                {# The same for loop you know: one table row per session. #}
-                {% for session in sessions %}
-                    <tr>
-                        <td>{{ session.day }}</td>
-                        <td>{{ session.course.name }}</td>
-                        <td>{{ session.minutes }}</td>
-                        <td>{{ session.note }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>No sessions yet. Add one from the admin panel.</p>
-    {% endif %}
+{# The same if/else you know from Python, but inside HTML. #}
+{% if sessions %}
+<table class="table table-striped bg-white">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Course</th>
+            <th>Minutes</th>
+            <th>Note</th>
+        </tr>
+    </thead>
+    <tbody>
+        {# The same for loop you know: one table row per session. #}
+        {% for session in sessions %}
+        <tr>
+            <td>{{ session.day }}</td>
+            <td>
+                {# Link to this session's course page: session -> its course -> its number. #}
+                <a href="{% url 'course_detail' session.course.pk %}">{{ session.course.name }}</a>
+            </td>
+            <td>{{ session.minutes }}</td>
+            <td>{{ session.note }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No sessions yet. Add one from the admin panel.</p>
+{% endif %}
 {% endblock %}
-

@@ -10,6 +10,11 @@ urlpatterns = [
     path("about/", views.about, name="about"),
         # "add/" = the page with the add-session form.
     path("add/", views.add_session, name="add_session"),
+        path("courses/", views.course_list, name="course_list"),
+    # <int:pk> = a number in the address. Django passes it to the view as "pk".
+    path("courses/<int:pk>/", views.course_detail, name="course_detail"),
+
+    
 ]
 
 
