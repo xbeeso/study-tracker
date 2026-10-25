@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
+from .forms import SessionForm
 from .models import Session
 
 
@@ -16,3 +17,20 @@ def about(request):
     """The about page: a simple page with no data from the database."""
     # No dictionary needed: this page doesn't show any data.
     return render(request, "tracker/about.html")
+
+
+def add_session(request):
+    """Show the add-session form, and save it when the user submits it."""
+    if request.method == "POST":
+        # The user pressed Save: fill the form with what they typed.
+        form = SessionForm(request.POST)
+        if form.is_valid():  # Django checks every field (e.g. no negative minutes).
+            form.save()  # Create the new session in the database.
+            return redirect("home")  # Go to the home page to see the new session.
+    else:
+        # The user just opened the page: show an empty form.
+        form = SessionForm()
+    # We reach here when the page is first opened,
+    # OR when the form had errors (it then shows the error messages).
+    return render(request, "tracker/add_session.html", {"form": form})
+

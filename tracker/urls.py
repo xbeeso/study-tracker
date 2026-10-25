@@ -8,5 +8,8 @@ urlpatterns = [
     path("", views.home, name="home"),
     # "about/" = the about page.
     path("about/", views.about, name="about"),
+        # "add/" = the page with the add-session form.
+    path("add/", views.add_session, name="add_session"),
 ]
+
 

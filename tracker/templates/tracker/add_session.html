@@ -1,0 +1,28 @@
+{% extends "tracker/base.html" %}
+
+{% block title %}Add Session{% endblock %}
+
+{% block content %}
+    <h1 class="mb-3">Add a Study Session</h1>
+
+    {# method="post": we are SENDING data to the server, not just asking for a page. #}
+    <form method="post" class="card p-3">
+        {# Security token: proves this form really came from OUR site. #}
+        {% csrf_token %}
+
+        {# Loop over the form's fields: one label and one input for each. #}
+        {% for field in form %}
+            <div class="mb-3">
+                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {# Show this field's error messages, if there are any. #}
+                {% if field.errors %}
+                    <div class="text-danger small mt-1">{{ field.errors|join:" " }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+{% endblock %}
+
