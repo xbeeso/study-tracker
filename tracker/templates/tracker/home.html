@@ -14,6 +14,7 @@
             <th>Course</th>
             <th>Minutes</th>
             <th>Note</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -27,6 +28,11 @@
             </td>
             <td>{{ session.minutes }}</td>
             <td>{{ session.note }}</td>
+            <td>
+                {# Each button links to THIS session's page, using its number. #}
+                <a href="{% url 'edit_session' session.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                <a href="{% url 'delete_session' session.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+            </td>
         </tr>
         {% endfor %}
     </tbody>

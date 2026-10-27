@@ -1,9 +1,9 @@
 {% extends "tracker/base.html" %}
 
-{% block title %}Add Session{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-    <h1 class="mb-3">Add a Study Session</h1>
+    <h1 class="mb-3">{{ title }}</h1>
 
     {# method="post": we are SENDING data to the server, not just asking for a page. #}
     <form method="post" class="card p-3">

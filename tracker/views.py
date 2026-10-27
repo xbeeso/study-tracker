@@ -31,9 +31,8 @@ def add_session(request):
     else:
         # The user just opened the page: show an empty form.
         form = SessionForm()
-    # We reach here when the page is first opened,
-    # OR when the form had errors (it then shows the error messages).
-    return render(request, "tracker/add_session.html", {"form": form})
+    # The same template is used for adding AND editing, so we send the page title too.
+    return render(request, "tracker/add_session.html", {"form": form, "title": "Add a Study Session"})
 
 
 def course_list(request):
@@ -58,3 +57,30 @@ def course_detail(request, pk):
         "total_minutes": total_minutes,
     })
 
+
+def edit_session(request, pk):
+    """Edit an existing session: the same form as 'add', but filled with its current data."""
+    # Find the session by its number, or show a 404 page.
+    session = get_object_or_404(Session, pk=pk)
+    if request.method == "POST":
+        # instance=session: UPDATE this session instead of creating a new one.
+        form = SessionForm(request.POST, instance=session)
+        if form.is_valid():
+            form.save()
+            return redirect("home")
+    else:
+        # Show the form already filled with the session's current values.
+        form = SessionForm(instance=session)
+    # Reuse the add-session template, with a different title.
+    return render(request, "tracker/add_session.html", {"form": form, "title": "Edit Session"})
+
+
+def delete_session(request, pk):
+    """Ask for confirmation first, then delete the session."""
+    session = get_object_or_404(Session, pk=pk)
+    if request.method == "POST":
+        # The user pressed "Yes, delete" in the confirmation form.
+        session.delete()
+        return redirect("home")
+    # First visit: show the confirmation page.
+    return render(request, "tracker/session_confirm_delete.html", {"session": session})
