@@ -32,7 +32,7 @@ def add_session(request):
         # The user just opened the page: show an empty form.
         form = SessionForm()
     # The same template is used for adding AND editing, so we send the page title too.
-    return render(request, "tracker/add_session.html", {"form": form, "title": "Add a Study Session"})
+        return render(request, "tracker/add_session.html", {"form": form, "title": "إضافة جلسة مذاكرة"})
 
 
 def course_list(request):
@@ -72,7 +72,7 @@ def edit_session(request, pk):
         # Show the form already filled with the session's current values.
         form = SessionForm(instance=session)
     # Reuse the add-session template, with a different title.
-    return render(request, "tracker/add_session.html", {"form": form, "title": "Edit Session"})
+        return render(request, "tracker/add_session.html", {"form": form, "title": "تعديل الجلسة"})
 
 
 def delete_session(request, pk):

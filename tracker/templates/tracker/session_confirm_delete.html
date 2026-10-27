@@ -1,20 +1,20 @@
 {% extends "tracker/base.html" %}
 
-{% block title %}Delete Session{% endblock %}
+{% block title %}حذف الجلسة{% endblock %}
 
 {% block content %}
-    <h1 class="mb-3">Delete Session</h1>
+    <h1 class="mb-3">حذف الجلسة</h1>
 
     <div class="card p-3">
-        <p>Are you sure you want to delete this session?</p>
-        <p class="fw-bold">{{ session.day }} | {{ session.course.name }} | {{ session.minutes }} min</p>
+        <p>متأكد إنك تبي تحذف هذي الجلسة؟</p>
+        <p class="fw-bold">{{ session.day }} | {{ session.course.name }} | {{ session.minutes }} دقيقة</p>
 
         {# A POST form, not a link: deleting changes data, so it needs POST + the CSRF token. #}
         <form method="post">
             {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Yes, delete</button>
+            <button type="submit" class="btn btn-danger">نعم، احذف</button>
             {# Cancel is a normal link: it only goes back, it changes nothing. #}
-            <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
+            <a href="{% url 'home' %}" class="btn btn-secondary">إلغاء</a>
         </form>
     </div>
 {% endblock %}

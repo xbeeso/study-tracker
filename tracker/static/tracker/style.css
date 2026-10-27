@@ -1,0 +1,32 @@
+/* ===== Colors: change these two lines to change the whole site's look ===== */
+:root {
+    --brand: #4f46e5;       /* Main color (indigo). */
+    --brand-dark: #3730a3;  /* A darker shade, used when hovering. */
+}
+
+/* Use the Arabic font everywhere on the page. */
+body {
+    font-family: "Tajawal", sans-serif;
+}
+
+/* The navbar background, in our brand color. */
+.brand-bg {
+    background-color: var(--brand);
+}
+
+/* Bootstrap's blue buttons, in our brand color. */
+.btn-primary {
+    background-color: var(--brand);
+    border-color: var(--brand);
+}
+
+.btn-primary:hover {
+    background-color: var(--brand-dark);
+    border-color: var(--brand-dark);
+}
+
+/* Cards: rounded corners and a soft shadow. */
+.card {
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}

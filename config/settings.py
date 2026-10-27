@@ -103,7 +103,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# Arabic: Django's own texts (form errors, dates, the admin panel) become Arabic.
+LANGUAGE_CODE = "ar"
 
 # Use Saudi time instead of UTC, so dates match our real day.
 TIME_ZONE = "Asia/Riyadh"

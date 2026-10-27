@@ -24,4 +24,18 @@ class SessionForm(forms.ModelForm):
             else:
                 field.widget.attrs["class"] = "form-control"  # Normal input boxes.
 
-                
+
+    class Meta:
+        model = Session  # Build the form from this model.
+        fields = ["course", "minutes", "note", "day"]  # Which fields to show, in this order.
+        widgets = {
+            # Show a real date picker in the browser instead of a plain text box.
+            "day": forms.DateInput(attrs={"type": "date"}, format="%Y-%m-%d"),
+        }
+        # The labels shown above each field. Display only: the database doesn't change.
+        labels = {
+            "course": "الدورة",
+            "minutes": "الدقائق",
+            "note": "ملاحظة",
+            "day": "التاريخ",
+        }                
