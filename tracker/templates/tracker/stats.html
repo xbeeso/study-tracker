@@ -1,0 +1,51 @@
+{% extends "tracker/base.html" %}
+
+{# l10n: lets us turn off the local number format for specific values. #}
+{% load l10n %}
+
+{% block title %}الإحصائيات{% endblock %}
+
+{% block content %}
+    <h1 class="mb-3">إحصائياتي</h1>
+
+    {# Bootstrap grid: 3 columns on wide screens, stacked under each other on phones. #}
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card p-3 h-100">
+                <div class="text-muted">مجموع الساعات</div>
+                <div class="fs-2 fw-bold">{{ total_hours|unlocalize }}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-3 h-100">
+                <div class="text-muted">ساعات هذا الأسبوع</div>
+                <div class="fs-2 fw-bold">{{ week_hours|unlocalize }}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-3 h-100">
+                <div class="text-muted">أكثر دورة ذاكرتها</div>
+                {# Show it only if there is a course AND it has some minutes. #}
+                {% if top_course and top_course.total_minutes %}
+                    <div class="fs-2 fw-bold">{{ top_course.name }}</div>
+                {% else %}
+                    <div class="fs-2 fw-bold">—</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <h2 class="h4 mb-3">ساعات كل دورة</h2>
+    <ul class="list-group">
+        {% for course in courses %}
+            <li class="list-group-item d-flex justify-content-between">
+                {{ course.name }}
+                <span>{{ course.hours }} ساعة</span>
+            </li>
+        {% empty %}
+            {# "empty" runs only when the list has nothing in it. #}
+            <li class="list-group-item">ما فيه دورات إلى الحين.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+

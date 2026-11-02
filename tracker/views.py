@@ -1,4 +1,7 @@
-from django.db.models import Count, Sum
+from datetime import date, timedelta
+
+from django.db.models import Count, IntegerField, Sum
+from django.db.models.functions import Coalesce
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import SessionForm
@@ -84,3 +87,40 @@ def delete_session(request, pk):
         return redirect("home")
     # First visit: show the confirmation page.
     return render(request, "tracker/session_confirm_delete.html", {"session": session})
+
+
+def stats(request):
+    """Statistics page: total hours, this week's hours, and hours per course."""
+    # 1) Total minutes of ALL sessions. Same as yesterday's: SELECT SUM(minutes)
+    total_minutes = Session.objects.aggregate(total=Sum("minutes"))["total"] or 0
+
+    # 2) This week, starting from Sunday (the Saudi week).
+    today = date.today()
+    # weekday(): Monday=0 ... Sunday=6. This gives how many days have passed since Sunday.
+    days_since_sunday = (today.weekday() + 1) % 7
+    week_start = today - timedelta(days=days_since_sunday)
+    # day__gte = "day is greater than or equal to". Same as: WHERE day >= week_start
+    week_minutes = Session.objects.filter(day__gte=week_start).aggregate(total=Sum("minutes"))["total"] or 0
+
+    # 3) Every course with its total minutes, biggest first.
+    # Same as yesterday's LEFT JOIN + GROUP BY + ORDER BY. Coalesce = COALESCE: no sessions -> 0.
+    courses = list(
+        Course.objects.annotate(
+            total_minutes=Coalesce(Sum("sessions__minutes"), 0, output_field=IntegerField())
+        ).order_by("-total_minutes")
+    )
+    # Loop over the courses and give each one its hours (templates can't divide numbers).
+    for course in courses:
+        course.hours = round(course.total_minutes / 60, 1)
+
+    # The top course is the first one, or None if there are no courses at all.
+    top_course = courses[0] if courses else None
+
+    return render(request, "tracker/stats.html", {
+        "total_hours": round(total_minutes / 60, 1),
+        "week_hours": round(week_minutes / 60, 1),
+        "top_course": top_course,
+        "courses": courses,
+    })
+
+

@@ -16,7 +16,8 @@ urlpatterns = [
     # The session's number is in the address, like the course pages.
     path("sessions/<int:pk>/edit/", views.edit_session, name="edit_session"),
     path("sessions/<int:pk>/delete/", views.delete_session, name="delete_session"),
-    
+    path("stats/", views.stats, name="stats"),
+
     
 ]
 
