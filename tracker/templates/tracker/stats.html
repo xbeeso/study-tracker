@@ -6,46 +6,55 @@
 {% block title %}الإحصائيات{% endblock %}
 
 {% block content %}
-    <h1 class="mb-3">إحصائياتي</h1>
+<h1 class="mb-3">إحصائياتي</h1>
 
-    {# Bootstrap grid: 3 columns on wide screens, stacked under each other on phones. #}
-    <div class="row g-3 mb-4">
-        <div class="col-md-4">
-            <div class="card p-3 h-100">
-                <div class="text-muted">مجموع الساعات</div>
-                <div class="fs-2 fw-bold">{{ total_hours|unlocalize }}</div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card p-3 h-100">
-                <div class="text-muted">ساعات هذا الأسبوع</div>
-                <div class="fs-2 fw-bold">{{ week_hours|unlocalize }}</div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card p-3 h-100">
-                <div class="text-muted">أكثر دورة ذاكرتها</div>
-                {# Show it only if there is a course AND it has some minutes. #}
-                {% if top_course and top_course.total_minutes %}
-                    <div class="fs-2 fw-bold">{{ top_course.name }}</div>
-                {% else %}
-                    <div class="fs-2 fw-bold">—</div>
-                {% endif %}
-            </div>
+{# Bootstrap grid: 3 columns on wide screens, stacked under each other on phones. #}
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card p-3 h-100">
+            <div class="text-muted">مجموع الساعات</div>
+            <div class="fs-2 fw-bold">{{ total_hours|unlocalize }}</div>
         </div>
     </div>
+    <div class="col-md-4">
+        <div class="card p-3 h-100">
+            <div class="text-muted">ساعات هذا الأسبوع</div>
+            <div class="fs-2 fw-bold">{{ week_hours|unlocalize }}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-3 h-100">
+            <div class="text-muted">أكثر دورة ذاكرتها</div>
+            {# Show it only if there is a course AND it has some minutes. #}
+            {% if top_course and top_course.total_minutes %}
+            <div class="fs-2 fw-bold">{{ top_course.name }}</div>
+            {% else %}
+            <div class="fs-2 fw-bold">—</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
 
-    <h2 class="h4 mb-3">ساعات كل دورة</h2>
-    <ul class="list-group">
-        {% for course in courses %}
-            <li class="list-group-item d-flex justify-content-between">
-                {{ course.name }}
-                <span>{{ course.hours }} ساعة</span>
-            </li>
-        {% empty %}
-            {# "empty" runs only when the list has nothing in it. #}
-            <li class="list-group-item">ما فيه دورات إلى الحين.</li>
-        {% endfor %}
-    </ul>
+<h2 class="h4 mb-3">ساعات كل دورة</h2>
+<ul class="list-group">
+    {% for course in courses %}
+    <li class="list-group-item">
+        <!-- Top row: course name on one side, hours vs target on the other -->
+        <div class="d-flex justify-content-between mb-2">
+            <span>{{ course.name }}</span>
+            <span>{{ course.hours|unlocalize }} من {{ course.target_hours }} ساعة</span>
+        </div>
+        <!-- Bootstrap progress bar: the inner div's width is the filled part -->
+        <div class="progress" role="progressbar" aria-valuenow="{{ course.percent }}" aria-valuemin="0"
+            aria-valuemax="100">
+            <!-- unlocalize keeps the number plain, so the CSS width always works -->
+            <div class="progress-bar" style="width: {{ course.percent|unlocalize }}%">{{ course.percent }}%</div>
+        </div>
+    </li>
+    {% empty %}
+    <li class="list-group-item">ما فيه دورات بعد.</li>
+    {% endfor %}
+</ul>
 {% endblock %}
 
+]

@@ -8,6 +8,9 @@ class Course(models.Model):
 
     # CharField = short text. max_length is required for text fields.
     name = models.CharField(max_length=100)
+    # How many hours you want to study this course in total.
+    # default=10: existing courses get 10, so the database knows what to put in the new column.
+    target_hours = models.PositiveIntegerField(default=10)
 
     def __str__(self):
         # How a course appears in the admin panel and when printed.

@@ -30,3 +30,9 @@ body {
     border-radius: 0.75rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
+
+/* Progress bars use the brand color instead of Bootstrap's default blue */
+.progress-bar {
+  background-color: var(--brand);
+}
+

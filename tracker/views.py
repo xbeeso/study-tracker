@@ -112,6 +112,14 @@ def stats(request):
     # Loop over the courses and give each one its hours (templates can't divide numbers).
     for course in courses:
         course.hours = round(course.total_minutes / 60, 1)
+        # Progress toward the target, as a whole-number percentage (0 to 100).
+        if course.target_hours > 0:
+            # target_hours * 60 turns the target into minutes, so both sides use the same unit.
+            # min(..., 100) stops the bar from going past 100% if you study more than the target.
+            course.percent = min(round(course.total_minutes / (course.target_hours * 60) * 100), 100)
+        else:
+            # A target of 0 would mean dividing by zero, which crashes Python.
+            course.percent = 0
 
     # The top course is the first one, or None if there are no courses at all.
     top_course = courses[0] if courses else None
