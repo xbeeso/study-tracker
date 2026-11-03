@@ -128,3 +128,10 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+
+# Where to send the user after logging in or out. "home" is the url name of our main page.
+LOGIN_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "home"
+# Where to send visitors who try to open a protected page without logging in.
+LOGIN_URL = "login"

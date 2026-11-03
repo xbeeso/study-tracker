@@ -1,5 +1,5 @@
 from datetime import date
-
+from django.conf import settings
 from django.db import models
 
 
@@ -19,7 +19,13 @@ class Course(models.Model):
 
 class Session(models.Model):
     """One study session. It points to its course instead of repeating the name."""
-
+    # The owner of this session. Each session belongs to exactly one user.
+    # settings.AUTH_USER_MODEL = "whatever user table this project uses" (Django's recommended way).
+    # CASCADE: if a user is deleted, their sessions are deleted with them.
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="study_sessions"
+    )
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="sessions")
     # ForeignKey = a link to a row in the Course table.
     # on_delete=CASCADE: if a course is deleted, its sessions are deleted too.
     # related_name="sessions": lets us go from a course to its sessions.
