@@ -1,0 +1,15 @@
+{% extends "tracker/base.html" %}
+
+{% block title %}الصفحة غير موجودة{% endblock %}
+
+{% block content %}
+{# Django shows this page automatically for any 404, but ONLY when DEBUG is off. #}
+{# It says nothing about WHY the page wasn't found: no hints for attackers. #}
+<div class="card p-4 text-center">
+    <div class="display-4 fw-bold mb-2">404</div>
+    <p class="mb-3">الصفحة اللي تدوّرها غير موجودة.</p>
+    <div>
+        <a class="btn btn-primary" href="{% url 'home' %}">رجوع للرئيسية</a>
+    </div>
+</div>
+{% endblock %}
