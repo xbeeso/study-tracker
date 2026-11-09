@@ -1,0 +1,27 @@
+# study-tracker.service: runs the Study Tracker site with Gunicorn, managed by systemd.
+
+[Unit]
+Description=Study Tracker (Django + Gunicorn)
+# Start only after the network is ready.
+After=network.target
+
+[Service]
+# Run as YOUR user, never as root (least privilege).
+User=xbeeso
+Group=xbeeso
+# The project folder: Django finds .env and db.sqlite3 from here.
+WorkingDirectory=/home/xbeeso/projects/study-tracker
+# Full path to gunicorn inside the venv, so no "activate" is needed.
+ExecStart=/home/xbeeso/projects/study-tracker/venv/bin/gunicorn config.wsgi:application --bind 127.0.0.1:8000 --workers 2
+# If it crashes, wait 3 seconds and start it again.
+Restart=always
+RestartSec=3
+# Security: the site can never gain more privileges than it started with.
+NoNewPrivileges=true
+# Security: give the site its own private /tmp, hidden from other programs.
+PrivateTmp=true
+
+[Install]
+# Start automatically when the system boots.
+WantedBy=multi-user.target
+
